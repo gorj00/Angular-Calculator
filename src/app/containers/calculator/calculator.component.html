@@ -13,18 +13,7 @@
       </div>
     </div>
 
-    <div class="row  mt-3">
-      <div
-        *ngFor="let calcButton of calcButtons"
-        [ngClass]="[calcButton.specialCol ? 'col-' + calcButton.specialCol : 'col-3', 'mb-3']"
-      >
-        <button type="button" [ngClass]="'btn btn-' + calcButton.color">
-          {{ calcButton.label }}
-        </button>
-      </div>
-
-    </div>
-
+    <calc-buttons></calc-buttons>
 
   </div>
 </div>

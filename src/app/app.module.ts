@@ -13,6 +13,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { CalculatorComponent } from './containers/calculator/calculator.component';
+import { ButtonsComponent } from './containers/calculator/buttons/buttons.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CalculatorComponent } from './containers/calculator/calculator.componen
     SidebarComponent,
     ContentComponent,
     CalculatorComponent,
+    ButtonsComponent,
   ],
   imports: [
     BrowserModule,
