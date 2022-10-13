@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ICalcButton } from '../../../models/calculator.models'
 
 @Component({
@@ -7,6 +7,7 @@ import { ICalcButton } from '../../../models/calculator.models'
   styleUrls: ['./buttons.component.less']
 })
 export class ButtonsComponent implements OnInit {
+  @Output() inputChange = new EventEmitter<{ symbol: string, type: string}>();
 
   calcButtons: ICalcButton[] = [
     {
@@ -46,9 +47,9 @@ export class ButtonsComponent implements OnInit {
     ...this.formNumberButtonsObjects(0, 0),
     {
      color: 'info',
-     type: 'operator',
+    //  handled as number
+     type: 'number',
      label: '.',
-     function: () => {},
     },
     {
      color: 'info',
@@ -86,6 +87,10 @@ export class ButtonsComponent implements OnInit {
         type: 'number',
         label: rangeStart.toString(),
     }]
+  }
+
+  onButtonClick(symbol: string, type: string) {
+    this.inputChange.emit({ symbol, type})
   }
 
   ngOnInit(): void {

@@ -32,6 +32,20 @@ export class CalculatorComponent implements OnInit {
     }
   ]
 
+  onChangeExpression(event: { symbol: string, type: string}) {
+    const { symbol, type } = event;
+    switch (type) {
+      case 'operator':
+        this.expression = this.expression + ' ' + symbol;
+        break;
+      case 'number':
+        this.expression = this.expression + symbol;
+        break;
+      default:
+        break;
+    }
+  }
+
 
   constructor() { }
 

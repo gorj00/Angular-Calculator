@@ -3,7 +3,7 @@
 
     <calc-history-field [history]="mockedHistory"></calc-history-field>
     <calc-expression-field [expression]="expression"></calc-expression-field>
-    <calc-buttons></calc-buttons>
+    <calc-buttons (inputChange)="onChangeExpression($event)"></calc-buttons>
 
   </div>
 </div>
