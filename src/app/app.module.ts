@@ -12,6 +12,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { CalculatorComponent } from './containers/calculator/calculator.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { EffectsModule } from '@ngrx/effects';
     FooterComponent,
     SidebarComponent,
     ContentComponent,
+    CalculatorComponent,
   ],
   imports: [
     BrowserModule,
