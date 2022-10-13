@@ -5,3 +5,10 @@ export interface ICalcButton {
   function?: any;
   specialCol?: string;
 }
+
+export interface ICalcHistory {
+  datestamp: number;
+  expression: string;
+  evaluation: number;
+  error: any;
+}

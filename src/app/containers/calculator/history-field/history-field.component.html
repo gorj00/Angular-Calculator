@@ -1,0 +1,8 @@
+<div class="card">
+  <div class="card-body text-end fs-6">
+    <div *ngFor="let item of history.slice(-3)" class="mb-3">
+      <div class="fs-4 mb-1">{{item.evaluation}}</div>
+      <div>{{item.expression}} =</div>
+    </div>
+  </div>
+</div>

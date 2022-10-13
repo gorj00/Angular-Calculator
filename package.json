@@ -23,6 +23,8 @@
     "@ngrx/effects": "^14.3.2",
     "@ngrx/store": "^14.3.2",
     "@schematics/angular": "^14.2.6",
+    "mathjs": "^11.3.0",
+    "moment": "^2.29.4",
     "ngx-bootstrap": "^9.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

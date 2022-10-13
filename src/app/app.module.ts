@@ -15,6 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { CalculatorComponent } from './containers/calculator/calculator.component';
 import { ButtonsComponent } from './containers/calculator/buttons/buttons.component';
 import { ExpressionFieldComponent } from './containers/calculator/expression-field/expression-field.component';
+import { HistoryFieldComponent } from './containers/calculator/history-field/history-field.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ExpressionFieldComponent } from './containers/calculator/expression-fie
     CalculatorComponent,
     ButtonsComponent,
     ExpressionFieldComponent,
+    HistoryFieldComponent,
   ],
   imports: [
     BrowserModule,

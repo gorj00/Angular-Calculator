@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ICalcHistory } from '../../models/calculator.models';
+import * as moment from 'moment';
+import * as math from 'mathjs';
 
 @Component({
   selector: 'calc-calculator',
@@ -8,6 +11,27 @@ import { FormControl } from '@angular/forms';
 })
 export class CalculatorComponent implements OnInit {
   expression: string = '0.'
+  mockedHistory: ICalcHistory[] = [
+    {
+      datestamp: moment().subtract(2, 'minutes').valueOf(),
+      expression: '13 + 5',
+      evaluation: 18,
+      error: null,
+    },
+    {
+      datestamp: moment().subtract(1, 'minutes').valueOf(),
+      expression: '13 /3 + 5',
+      evaluation: math.evaluate('13 /3 + 5'),
+      error: null,
+    },
+    {
+      datestamp: moment().valueOf(),
+      expression: '13 + 5 * 25',
+      evaluation: math.evaluate('13 + 5 * 25 ^ 3'),
+      error: null,
+    }
+  ]
+
 
   constructor() { }
 
