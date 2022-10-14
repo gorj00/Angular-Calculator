@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { ICalcHistory } from '../../models/calculator.models';
 import * as moment from 'moment';
 import * as math from 'mathjs';
