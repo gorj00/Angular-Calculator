@@ -14,13 +14,11 @@ export class ButtonsComponent implements OnInit {
      color: 'info',
      type: 'function',
      label: 'AC',
-     function: () => {},
     },
     {
      color: 'info',
      type: 'function',
      label: '+/-',
-     function: () => {},
      specialCol: '9',
     },
     ...this.formNumberButtonsObjects(7, 9),
@@ -34,7 +32,6 @@ export class ButtonsComponent implements OnInit {
      color: 'info',
      type: 'operator',
      label: '×',
-     function: () => {},
     },
     ...this.formNumberButtonsObjects(1, 3),
 
@@ -42,7 +39,6 @@ export class ButtonsComponent implements OnInit {
      color: 'info',
      type: 'operator',
      label: '−',
-     function: () => {},
     },
     ...this.formNumberButtonsObjects(0, 0),
     {
@@ -53,15 +49,13 @@ export class ButtonsComponent implements OnInit {
     },
     {
      color: 'info',
-     type: 'operator',
+     type: 'function',
      label: '=',
-     function: () => {},
     },
     {
      color: 'info',
      type: 'operator',
      label: '+',
-     function: () => {},
     },
  ]
 

@@ -1,5 +1,5 @@
 <div class="card mt-3">
-  <div class="card-body text-end fs-2">
+  <div [ngClass]="['card-body text-end fs-2', invalidAction ? 'invalid-action-flag' : '']">
     {{ expression }}
   </div>
 </div>

@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ExpressionFieldComponent implements OnInit {
   @Input() expression: string;
+  @Input() invalidAction: boolean;
 
   constructor() { }
 

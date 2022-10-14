@@ -3,9 +3,9 @@
     *ngFor="let calcButton of calcButtons"
     [ngClass]="[calcButton.specialCol ? 'col-' + calcButton.specialCol : 'col-3', 'mb-3']"
   >
-    <button 
-      type="button" 
-      [ngClass]="'btn btn-' + calcButton.color" 
+    <button
+      type="button"
+      [ngClass]="'btn btn-' + calcButton.color"
       (click)="onButtonClick(calcButton.label, calcButton.type)"
     >
       {{ calcButton.label }}
