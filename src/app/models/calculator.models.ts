@@ -2,7 +2,8 @@ export interface ICalcButton {
   color: string;
   type: string;
   label: string;
-  function?: any;
+  operator?: string;
+  action?: string;
   specialCol?: string;
 }
 
@@ -11,4 +12,8 @@ export interface ICalcHistory {
   expression: string;
   evaluation: number;
   error: any;
+}
+
+export interface ICalcOperators {
+  [key: string]: { label: string, sign: string }
 }
