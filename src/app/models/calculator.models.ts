@@ -3,7 +3,7 @@ export interface ICalcButton {
   type: string;
   label: string;
   operator?: string;
-  action?: string;
+  action?: ECalsActions;
   specialCol?: string;
 }
 
@@ -16,4 +16,8 @@ export interface ICalcHistory {
 
 export interface ICalcOperators {
   [key: string]: { label: string, sign: string }
+}
+
+export enum ECalsActions {
+  EQUALS, CHANGE_OPERATOR, ALL_CLEAR
 }

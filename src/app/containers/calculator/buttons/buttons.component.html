@@ -6,7 +6,9 @@
     <button
       type="button"
       [ngClass]="'btn btn-' + calcButton.color"
-      (click)="onButtonClick(calcButton.label, calcButton.type)"
+      (click)="onButtonClick(
+        calcButton.label, calcButton.type, calcButton?.action
+      )"
     >
       {{ calcButton.label }}
     </button>

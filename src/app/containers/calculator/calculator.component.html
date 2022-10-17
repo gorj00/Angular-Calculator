@@ -1,9 +1,20 @@
 <div class="card" style="width: 22rem;">
   <div class="card-body invalid-action-flag">
 
-    <calc-history-field [history]="mockedHistory"></calc-history-field>
-    <calc-expression-field [expression]="expression" [invalidAction]="invalidAction"></calc-expression-field>
-    <calc-buttons (inputChange)="onChangeExpression($event)" [operators]="operators"></calc-buttons>
+    <calc-history-field
+      [history]="mockedHistory"
+    ></calc-history-field>
+
+    <calc-expression-field
+      [expression]="expression"
+      [result]="result"
+      [invalidAction]="invalidAction"
+    ></calc-expression-field>
+    
+    <calc-buttons
+      (inputChange)="onChangeExpression($event)"
+      [operators]="operators"
+    ></calc-buttons>
 
   </div>
 </div>
