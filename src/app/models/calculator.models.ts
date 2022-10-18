@@ -21,3 +21,10 @@ export interface ICalcOperators {
 export enum ECalsActions {
   EQUALS, CHANGE_OPERATOR, ALL_CLEAR
 }
+
+export interface IDetermineOperatorVals {
+  last: string;
+  secondToLast: string | null;
+  operatorIsMinus: boolean;
+  operatorIsPlus: boolean;
+}
