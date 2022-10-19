@@ -64,13 +64,13 @@ export class CalculatorComponent implements OnInit {
 
   onCalcAction(action: ECalsActions | null) {
     switch (action) {
-      case ECalsActions.ALL_CLEAR: // All clear
+      case ECalsActions.ALL_CLEAR:
         this.onAllClear();
         break;
-      case ECalsActions.EQUALS: // Equals
+      case ECalsActions.EQUALS:
         this.onSolveExpression();
         break;
-      case ECalsActions.CHANGE_OPERATOR: // Change operator
+      case ECalsActions.CHANGE_OPERATOR:
         this.onChangeOperator();
         break;
       default:
@@ -79,25 +79,19 @@ export class CalculatorComponent implements OnInit {
   }
 
   onChangeOperator() {
-    const splitExpressionByOperators =
-      this.getExpressionAsArrOfNumsAndOperators();
-    const length = splitExpressionByOperators.length;
+    const expressionAsArr = this.getExpressionAsArrOfNumsAndOperators();
+    const length = expressionAsArr.length;
+
 
     if (length) {
       const { last, secondToLast, operatorIsMinus, operatorIsPlus } =
-        this.getChangeOperatorDeterminationVars(splitExpressionByOperators);
+        this.getChangeOperatorDeterminationVars(expressionAsArr);
       // If single positive number
       if (length === 1 && !Number.isNaN(+last) && +last > 0) {
-        this.changeOperatorForSingNumber(
-          splitExpressionByOperators[0],
-          'negative'
-        );
+        this.changeOperatorForSingNumber(expressionAsArr[0], 'negative');
         // If single negative number
       } else if (length === 2 && operatorIsMinus) {
-        this.changeOperatorForSingNumber(
-          splitExpressionByOperators[1],
-          'positive'
-        );
+        this.changeOperatorForSingNumber(expressionAsArr[1], 'positive');
         // Remaining cases
       } else if (
         length > 1 &&
@@ -106,7 +100,7 @@ export class CalculatorComponent implements OnInit {
       ) {
         this.changeOperatorOfLastNumberInMultiple(
           secondToLast,
-          splitExpressionByOperators
+          expressionAsArr
         );
         // Invalid expression ending for operator change
       } else {
@@ -121,6 +115,7 @@ export class CalculatorComponent implements OnInit {
   getChangeOperatorDeterminationVars(
     expressionArr: string[]
   ): IDetermineOperatorVals {
+    const length = expressionArr.length
     const last = expressionArr[length - 1];
     const secondToLast = length > 1 ? expressionArr[length - 2] : null;
     const operatorIsMinus = secondToLast === this.operators.minus.label;
@@ -152,6 +147,7 @@ export class CalculatorComponent implements OnInit {
     secondToLast: string | null,
     expressionArr: string[]
   ) {
+    const length = expressionArr.length
     const operatorConverted = this.convertLabelSign(secondToLast);
     const convertedExpressionArr = [...expressionArr];
     convertedExpressionArr[length - 2] = operatorConverted;
@@ -170,12 +166,13 @@ export class CalculatorComponent implements OnInit {
   }
 
   convertLabelSign(sign: string | null): string {
-    if (sign === this.operators.plus.label) {
-      return this.operators.minus.label;
-    } else if (sign === this.operators.minus.label) {
-      return this.operators.plus.label;
-    } else {
-      return '';
+    switch (sign) {
+      case this.operators.plus.label:
+        return this.operators.minus.label;
+      case this.operators.minus.label:
+        return this.operators.plus.label;
+      default:
+        return '';
     }
   }
 
@@ -191,11 +188,9 @@ export class CalculatorComponent implements OnInit {
   onSolveExpression() {
     const lastItem = this.getExpressionLastItem();
     if (lastItem && !Number.isNaN(+lastItem)) {
-      console.log(this.expression);
       const expressionWithMathSigns: string =
         this.replaceExpressionLabelSignsWithMathSigns();
       this.result = math.evaluate(expressionWithMathSigns).toString();
-      console.log(expressionWithMathSigns, this.result);
     } else {
       this.flagInvalidAction();
     }
@@ -255,32 +250,10 @@ export class CalculatorComponent implements OnInit {
     }
   }
 
-  getExpressionLastItem(
-    withOperator: boolean = false
-  ): string | null | undefined {
-    const splitExpressionByOperators = this.expression
-      .split(this.operatorsRegex)
-      // clear operators of white spaces
-      .map((item) => item && item.replace(/\s/g, ''))
-      // filter undefined values in array
-      .filter((item) => item);
-    // Includes number and operator parts
-
-    const partsLength = splitExpressionByOperators?.length;
-    if (withOperator && length) {
-      // // Only one number part
-      // if (length === 1) {
-      //   // Only positive number, change to negative
-      // } else {
-
-      // }
-      return null;
-      // Multiple number parts
-    } else if (!withOperator && length) {
-      return splitExpressionByOperators.pop();
-    } else {
-      return null;
-    }
+  getExpressionLastItem(): string {
+    const expressionAsArr = this.getExpressionAsArrOfNumsAndOperators()
+    const length = expressionAsArr.length
+    return expressionAsArr[length - 1];
   }
 
   onAllClear() {
@@ -288,7 +261,8 @@ export class CalculatorComponent implements OnInit {
     this.result = '';
   }
 
-  // Multiple dot input, dot on empty expression, double operator input
+  // Multiple dot input, dot on empty expression,
+  // double operator input, invalid operations
   flagInvalidAction() {
     this.invalidAction = true;
     setTimeout(() => (this.invalidAction = false), 500);
