@@ -17,6 +17,10 @@ import { ButtonsComponent } from './containers/calculator/buttons/buttons.compon
 import { ExpressionFieldComponent } from './containers/calculator/expression-field/expression-field.component';
 import { HistoryFieldComponent } from './containers/calculator/history-field/history-field.component';
 
+import { calculatorFeature } from './store/calculator/calculator.feature';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,8 +40,10 @@ import { HistoryFieldComponent } from './containers/calculator/history-field/his
     BrowserAnimationsModule,
     MaterialModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({}),
+    StoreModule.forFeature(calculatorFeature),
     EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent]

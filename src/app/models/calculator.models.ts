@@ -28,3 +28,9 @@ export interface IDetermineOperatorVals {
   operatorIsMinus: boolean;
   operatorIsPlus: boolean;
 }
+
+export interface ICalculatorState {
+  history: ICalcHistory[],
+  errors: ICalcHistory[],
+  result: ICalcHistory | null,
+}
