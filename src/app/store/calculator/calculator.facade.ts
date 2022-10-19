@@ -4,7 +4,7 @@ import { calculatorFeature } from './calculator.feature';
 import { ICalculatorState, ICalcHistory } from '../../models/calculator.models';
 import { CalculatorActions } from './calculator.actions'
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CalculatorFacade {
   history$ = this.store.select(calculatorFeature.selectHistory)
   errors$ = this.store.select(calculatorFeature.selectErrors)

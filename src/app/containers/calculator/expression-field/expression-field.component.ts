@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ICalcHistory } from '../../../models/calculator.models';
 
 @Component({
   selector: 'calc-expression-field',
@@ -7,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ExpressionFieldComponent implements OnInit {
   @Input() expression: string;
-  @Input() result: string;
+  @Input() result: ICalcHistory | null;
   @Input() invalidAction: boolean;
 
   constructor() { }

@@ -10,7 +10,7 @@ export interface ICalcButton {
 export interface ICalcHistory {
   datestamp: number;
   expression: string;
-  evaluation: number;
+  evaluation: string | null;
   error: any;
 }
 

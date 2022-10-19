@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICalcHistory, ICalcOperators, ECalsActions, IDetermineOperatorVals } from '../../models/calculator.models';
+import { CalculatorFacade } from '../../store/calculator/calculator.facade'
 import * as moment from 'moment';
 import * as math from 'mathjs';
 
@@ -9,6 +10,11 @@ import * as math from 'mathjs';
   styleUrls: ['./calculator.component.less'],
 })
 export class CalculatorComponent implements OnInit {
+  data = {
+    history: this.calculatorFacade.history$,
+    errors: this.calculatorFacade.errors$,
+    result: this.calculatorFacade.result$,
+  }
   expression: string = '';
   result: string = '';
   operators: ICalcOperators = {
@@ -20,26 +26,6 @@ export class CalculatorComponent implements OnInit {
 
   operatorsRegex: RegExp = /(\s\+\s)|(\s\−\s)|(\s÷\s)|(\s×\s)/g;
   invalidAction: boolean = false;
-  mockedHistory: ICalcHistory[] = [
-    {
-      datestamp: moment().subtract(2, 'minutes').valueOf(),
-      expression: '13 + 5',
-      evaluation: 18,
-      error: null,
-    },
-    {
-      datestamp: moment().subtract(1, 'minutes').valueOf(),
-      expression: '13 /3 + 5',
-      evaluation: math.evaluate('13 /3 + 5'),
-      error: null,
-    },
-    {
-      datestamp: moment().valueOf(),
-      expression: '13 - 5 * 25',
-      evaluation: math.evaluate('13 + 5 * 25 ^ 3'),
-      error: null,
-    },
-  ];
 
   onChangeExpression(event: {
     symbol: string;
@@ -185,12 +171,36 @@ export class CalculatorComponent implements OnInit {
       });
   }
 
+  saveResult(expression: string, result: number) {
+    this.calculatorFacade.saveResult({
+      datestamp: moment().valueOf(),
+      error: null,
+      expression: expression,
+      evaluation: result.toString()
+    })
+  }
+
+  logError(e: any, expression: string) {
+    this.calculatorFacade.logErrorsEntry({
+      datestamp: moment().valueOf(),
+      error: e,
+      expression: expression,
+      evaluation: null
+    })
+  }
+
   onSolveExpression() {
     const lastItem = this.getExpressionLastItem();
     if (lastItem && !Number.isNaN(+lastItem)) {
       const expressionWithMathSigns: string =
         this.replaceExpressionLabelSignsWithMathSigns();
-      this.result = math.evaluate(expressionWithMathSigns).toString();
+      let result
+      try {
+        result = math.evaluate(expressionWithMathSigns)
+        this.saveResult(expressionWithMathSigns, result)
+      } catch (e) {
+        this.logError(e, expressionWithMathSigns)
+      }
     } else {
       this.flagInvalidAction();
     }
@@ -268,7 +278,7 @@ export class CalculatorComponent implements OnInit {
     setTimeout(() => (this.invalidAction = false), 500);
   }
 
-  constructor() {}
+  constructor(public calculatorFacade: CalculatorFacade) {}
 
   ngOnInit(): void {}
 }

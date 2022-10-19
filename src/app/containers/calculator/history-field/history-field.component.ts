@@ -7,7 +7,7 @@ import { ICalcHistory } from '../../../models/calculator.models';
   styleUrls: ['./history-field.component.less']
 })
 export class HistoryFieldComponent implements OnInit {
-  @Input() history: ICalcHistory[] 
+  @Input() history: ICalcHistory[] | null
 
   constructor() { }
 

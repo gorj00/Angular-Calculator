@@ -2,15 +2,15 @@
   <div class="card-body invalid-action-flag">
 
     <calc-history-field
-      [history]="mockedHistory"
+      [history]="data?.history | async"
     ></calc-history-field>
 
     <calc-expression-field
       [expression]="expression"
-      [result]="result"
+      [result]="data.result | async"
       [invalidAction]="invalidAction"
     ></calc-expression-field>
-    
+
     <calc-buttons
       (inputChange)="onChangeExpression($event)"
       [operators]="operators"
