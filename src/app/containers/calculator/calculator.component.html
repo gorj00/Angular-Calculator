@@ -2,12 +2,12 @@
   <div class="card-body invalid-action-flag">
 
     <calc-history-field
-      [history]="data?.history | async"
+      [history]="data?.history"
     ></calc-history-field>
 
     <calc-expression-field
       [expression]="expression"
-      [result]="data.result | async"
+      [result]="data?.result"
       [invalidAction]="invalidAction"
     ></calc-expression-field>
 

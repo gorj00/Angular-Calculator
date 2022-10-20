@@ -8,7 +8,7 @@ import { ICalcHistory } from '../../../models/calculator.models';
 })
 export class ExpressionFieldComponent implements OnInit {
   @Input() expression: string;
-  @Input() result: ICalcHistory | null;
+  @Input() result: ICalcHistory | null | undefined;
   @Input() invalidAction: boolean;
 
   constructor() { }

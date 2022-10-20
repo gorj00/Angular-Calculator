@@ -12,7 +12,7 @@ export class CalculatorFacade {
 
   constructor(private store: Store<ICalculatorState>) {}
 
-  logHistoryEntry(historyLog: ICalcHistory) {
+  logHistoryEntry(historyLog: ICalcHistory | null) {
     this.store.dispatch(CalculatorActions.log_history(historyLog))
   }
 

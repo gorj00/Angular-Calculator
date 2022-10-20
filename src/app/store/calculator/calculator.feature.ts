@@ -15,7 +15,7 @@ export const calculatorFeature = createFeature({
     initialState,
     on(CalculatorActions.log_history, (state: ICalculatorState, { historyLog }) => ({
       ...state,
-      history: [...state.history, historyLog]
+      history: historyLog ? [...state.history, historyLog] : state.history
     })),
     on(CalculatorActions.log_error, (state: ICalculatorState, { error }) => ({
       ...state,

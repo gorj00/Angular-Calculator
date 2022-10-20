@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ICalcHistory, ICalcOperators, ECalsActions, IDetermineOperatorVals } from '../../models/calculator.models';
-import { CalculatorFacade } from '../../store/calculator/calculator.facade'
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ICalculatorState, ICalcOperators, ECalsActions, IDetermineOperatorVals } from '../../models/calculator.models';
+import { CalculatorFacade } from '../../store/calculator/calculator.facade';
+import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 import * as math from 'mathjs';
 
@@ -9,14 +10,10 @@ import * as math from 'mathjs';
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.less'],
 })
-export class CalculatorComponent implements OnInit {
-  data = {
-    history: this.calculatorFacade.history$,
-    errors: this.calculatorFacade.errors$,
-    result: this.calculatorFacade.result$,
-  }
+export class CalculatorComponent implements OnInit, OnDestroy {
+  subs = new Subscription()
+  data: ICalculatorState = { history: [], errors: [], result: null }
   expression: string = '';
-  result: string = '';
   operators: ICalcOperators = {
     plus: { label: '+', sign: '+' },
     minus: { label: '−', sign: '-' },
@@ -189,6 +186,16 @@ export class CalculatorComponent implements OnInit {
     })
   }
 
+  saveCurrentResultToHistory() {
+    this.data.result && this.calculatorFacade.logHistoryEntry(
+      this.data.result
+    )
+  }
+
+  clearResultLog() {
+    this.data.result && this.calculatorFacade.clearCalculatorLog()
+  }
+
   onSolveExpression() {
     const lastItem = this.getExpressionLastItem();
     if (lastItem && !Number.isNaN(+lastItem)) {
@@ -268,7 +275,8 @@ export class CalculatorComponent implements OnInit {
 
   onAllClear() {
     this.expression = '';
-    this.result = '';
+    this.saveCurrentResultToHistory()
+    this.clearResultLog()
   }
 
   // Multiple dot input, dot on empty expression,
@@ -280,5 +288,13 @@ export class CalculatorComponent implements OnInit {
 
   constructor(public calculatorFacade: CalculatorFacade) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.subs.add(this.calculatorFacade.history$.subscribe(history => this.data.history = history))
+    this.subs.add(this.calculatorFacade.result$.subscribe(result => this.data.result = result))
+    this.subs.add(this.calculatorFacade.errors$.subscribe(errors => this.data.errors = errors))
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe()
+  }
 }
