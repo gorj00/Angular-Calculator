@@ -1,5 +1,8 @@
 <div class="card mt-3">
-  <div [ngClass]="['card-body text-end fs-2', invalidAction ? 'invalid-action-flag' : '']">
+  <div
+    [ngClass]="['card-body text-end fs-2', invalidAction ? 'invalid-action-flag' : '']"
+    data-test="calc-expression-field"
+  >
     {{ result ? result?.evaluation : expression }}
   </div>
 </div>
