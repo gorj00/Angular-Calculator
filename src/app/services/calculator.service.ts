@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { ICalculatorState, ICalcOperators, ECalsActions, IDetermineOperatorVals, EInvalidActions } from '../models/calculator.models';
+import { Injectable } from '@angular/core';
+import { ICalcOperators, IDetermineOperatorVals } from '../models/calculator.models';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root'})
@@ -129,8 +129,5 @@ export class CalculatorService {
     const length = expressionAsArr.length
     return expressionAsArr[length - 1];
   }
-
-
-
 
 }

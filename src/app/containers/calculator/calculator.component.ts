@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ICalculatorState, ICalcOperators, ECalsActions, IDetermineOperatorVals, EInvalidActions } from '../../models/calculator.models';
+import { ICalculatorState, ICalcOperators, ECalsActions, EInvalidActions } from '../../models/calculator.models';
 import { CalculatorFacade } from '../../store/calculator/calculator.facade';
 import { CalculatorService } from '../../services/calculator.service'
 import { Subscription } from 'rxjs';
