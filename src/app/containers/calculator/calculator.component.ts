@@ -136,12 +136,10 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     const expressionAsArr = this.calculatorService.
       getExpressionAsArrOfNumsAndOperators();
     const length = expressionAsArr.length;
-    console.log(expressionAsArr, length)
 
     if (length) {
       const { last, secondToLast, operatorIsMinus, operatorIsPlus } =
         this.calculatorService.getChangeOperatorDeterminationVars(expressionAsArr);
-        console.log(last, secondToLast, operatorIsMinus, operatorIsPlus)
 
       // If single positive number
       if (length === 1 && !Number.isNaN(+last) && +last > 0) {
@@ -318,7 +316,6 @@ export class CalculatorComponent implements OnInit, OnDestroy {
         (errors) => (this.data.errors = errors)
       )
     );
-
   }
 
   ngOnDestroy(): void {
