@@ -136,10 +136,13 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     const expressionAsArr = this.calculatorService.
       getExpressionAsArrOfNumsAndOperators();
     const length = expressionAsArr.length;
+    console.log(expressionAsArr, length)
 
     if (length) {
       const { last, secondToLast, operatorIsMinus, operatorIsPlus } =
         this.calculatorService.getChangeOperatorDeterminationVars(expressionAsArr);
+        console.log(last, secondToLast, operatorIsMinus, operatorIsPlus)
+
       // If single positive number
       if (length === 1 && !Number.isNaN(+last) && +last > 0) {
         this.calculatorService.changeOperatorForSingleNumber(expressionAsArr[0], 'negative');
@@ -182,7 +185,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Performs a predefined expression and/or store operation based on
+   * Performs a predefined operation and/or store operation based on
    * the action type
    *
    * @param {(ECalsActions | null)} action Action type
