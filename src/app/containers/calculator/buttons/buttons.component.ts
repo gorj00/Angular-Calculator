@@ -18,6 +18,13 @@ export class ButtonsComponent implements OnInit {
 
   constructor() {}
 
+  /**
+   * Forms multiple numbered calc buttons objects in a provided range
+   *
+   * @param {number} rangeStart Range start, inclusive
+   * @param {number} rangeEnd   Range end, inclusive
+   * @returns {ICalcButton[]}   Array of calc button objects
+   */
   formNumberButtonsObjects(
     rangeStart: number,
     rangeEnd: number,
@@ -39,6 +46,12 @@ export class ButtonsComponent implements OnInit {
     return [];
   }
 
+  /**
+   * Forms single number calc button object for a provided number
+   *
+   * @param {number} rangeStart Number for which to create calc button object
+   * @returns {ICalcButton[]}   Array with a single calc button object
+   */
   handleZeroRange(rangeStart: number): ICalcButton[] {
     return [
       {
@@ -49,10 +62,21 @@ export class ButtonsComponent implements OnInit {
     ];
   }
 
+  /**
+   * Event to be emitted on a calc button click, informing the parent
+   * about the symbol, type, and optionally an action
+   *
+   * @param {string} symbol         Calc button label
+   * @param {string} type           Type (function | operator | number)
+   * @param {ECalsActions} [action] Optional action
+   */
   onButtonClick(symbol: string, type: string, action?: ECalsActions) {
     this.inputChange.emit({symbol, type, action});
   }
 
+  /**
+   * Populates calculator's buttons field with predefined buttons
+   */
   populateButtonsOnInit() {
     this.calcButtons = [
       {
