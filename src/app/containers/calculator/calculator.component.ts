@@ -65,7 +65,6 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     const expressionAsArr = this.getExpressionAsArrOfNumsAndOperators();
     const length = expressionAsArr.length;
 
-
     if (length) {
       const { last, secondToLast, operatorIsMinus, operatorIsPlus } =
         this.getChangeOperatorDeterminationVars(expressionAsArr);
@@ -227,6 +226,9 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   }
 
   handleOperator(symbol: string) {
+    const continueFromPreviousResult = !!this.data.result
+    if (continueFromPreviousResult) this.onContinueWithPreviousExpression()
+
     let allowAppendObj: { allow: boolean } = { allow: false };
     this.determineAllowBoolean(allowAppendObj, symbol);
 
@@ -277,6 +279,13 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     this.expression = '';
     this.saveCurrentResultToHistory()
     this.clearResultLog()
+  }
+
+  onContinueWithPreviousExpression() {
+    this.onAllClear()
+    const historyLength = this.data.history.length
+    const lastHistoryLog = this.data.history[historyLength - 1]
+    this.expression = lastHistoryLog.evaluation ? lastHistoryLog.evaluation : ''
   }
 
   // Multiple dot input, dot on empty expression,
