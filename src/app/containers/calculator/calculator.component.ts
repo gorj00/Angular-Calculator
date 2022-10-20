@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ICalculatorState, ICalcOperators, ECalsActions, IDetermineOperatorVals } from '../../models/calculator.models';
+import { ICalculatorState, ICalcOperators, ECalsActions, IDetermineOperatorVals, EInvalidActions } from '../../models/calculator.models';
 import { CalculatorFacade } from '../../store/calculator/calculator.facade';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -86,11 +86,11 @@ export class CalculatorComponent implements OnInit, OnDestroy {
         );
         // Invalid expression ending for operator change
       } else {
-        this.flagInvalidAction();
+        this.flagInvalidAction(null, EInvalidActions.CHANGE_OPERATOR);
       }
       // Empty expression
     } else {
-      this.flagInvalidAction();
+      this.flagInvalidAction(null, 'empty expression');
     }
   }
 
@@ -208,7 +208,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
         this.logError(e, expressionWithMathSigns)
       }
     } else {
-      this.flagInvalidAction();
+      this.flagInvalidAction(null, EInvalidActions.EQUALS + ', last char not a number part');
     }
   }
 
@@ -235,7 +235,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     if (allowAppendObj.allow) {
       this.expression = this.expression + ' ' + symbol + ' ';
     } else {
-      this.flagInvalidAction();
+      this.flagInvalidAction(null, EInvalidActions.APPEND_OPERATOR);
     }
   }
 
@@ -264,7 +264,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
       if (lastItem && !Number.isNaN(+lastItem) && !lastItem.includes('.')) {
         this.expression = this.expression + symbol;
       } else {
-        this.flagInvalidAction();
+        this.flagInvalidAction(null, 'expression ends with a dot');
       }
     }
   }
@@ -290,9 +290,11 @@ export class CalculatorComponent implements OnInit, OnDestroy {
 
   // Multiple dot input, dot on empty expression,
   // double operator input, invalid operations
-  flagInvalidAction() {
+  flagInvalidAction(e?: any, attemptedAction?: string | ECalsActions) {
     this.invalidAction = true;
     setTimeout(() => (this.invalidAction = false), 500);
+    const errorParam = e ? e : attemptedAction ? attemptedAction : null
+    this.logError(errorParam, this.expression)
   }
 
   constructor(public calculatorFacade: CalculatorFacade) {}

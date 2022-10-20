@@ -19,7 +19,14 @@ export interface ICalcOperators {
 }
 
 export enum ECalsActions {
-  EQUALS, CHANGE_OPERATOR, ALL_CLEAR
+  EQUALS, CHANGE_OPERATOR, ALL_CLEAR, APPEND_OPERATOR
+}
+
+export enum EInvalidActions {
+  EQUALS = 'EQUALS',
+  CHANGE_OPERATOR = 'CHANGE_OPERATOR',
+  ALL_CLEAR = 'ALL_CLEAR',
+  APPEND_OPERATOR = 'APPEND_OPERATOR',
 }
 
 export interface IDetermineOperatorVals {
