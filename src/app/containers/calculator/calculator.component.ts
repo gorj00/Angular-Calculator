@@ -19,7 +19,17 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   operatorsRegex: RegExp
   invalidAction: boolean = false;
 
-  saveResult(expression: string, result: number) {
+  /**
+   ************************ STORE COMMUNICATION ***********************
+   */
+
+  /**
+   * Stores a given expression result into the store
+   *
+   * @param {string} expression Math expression user input
+   * @param {number} result     Evaluation of the expression
+   */
+    saveResult(expression: string, result: number) {
     this.calculatorFacade.saveResult({
       datestamp: moment().valueOf(),
       error: null,
@@ -28,6 +38,12 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * Stores an error log (caused by an invalid action) to the store
+   *
+   * @param {any}    e Any error or error message
+   * @param {string} expression Math expression user input
+   */
   logError(e: any, expression: string) {
     this.calculatorFacade.logErrorsEntry({
       datestamp: moment().valueOf(),
@@ -37,24 +53,39 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * Stores the evaluated result in the store's history logs if
+   * result exists
+   */
   saveCurrentResultToHistory() {
     this.data.result && this.calculatorFacade.logHistoryEntry(
       this.data.result
     )
   }
 
+  /**
+   * Clears the result property in the store if it exists
+   */
   clearResultLog() {
     this.data.result && this.calculatorFacade.clearCalculatorLog()
   }
 
+  /**
+   ******** MATH EXPRESSION USER INPUT HANDLING ***********************
+   */
+
+  /**
+   * Solves the expression and passes on the result to the store,
+   * or flags and logs an error in the store in case of invalid expression
+   *
+   */
   onSolveExpression() {
     const lastItem = this.calculatorService.getExpressionLastItem();
     if (lastItem && !Number.isNaN(+lastItem)) {
       const expressionWithMathSigns: string =
         this.calculatorService.replaceExpressionLabelSignsWithMathSigns();
-      let result
       try {
-        result = math.evaluate(expressionWithMathSigns)
+        const result = math.evaluate(expressionWithMathSigns)
         this.saveResult(expressionWithMathSigns, result)
       } catch (e) {
         this.logError(e, expressionWithMathSigns)
@@ -64,6 +95,16 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Gets called on a calc button click, attempts to append to
+   * or operate on the expression
+   *
+   * @param {{
+   *     symbol: string;        Calc button label
+   *     type: string;          Type (function | operator | number)
+   *     action?: ECalsActions; Optional action
+   *   }} event                 Event object containing the above
+   */
   onChangeExpression(event: {
     symbol: string;
     type: string;
@@ -87,6 +128,10 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Changes last number from positive to negative and vice versa,
+   * or flags and logs the error on a invalid attempt
+   */
   onChangeOperator() {
     const expressionAsArr = this.calculatorService.
       getExpressionAsArrOfNumsAndOperators();
@@ -121,6 +166,27 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Stores the current expression result into the store's history logs,
+   * and forms a new expression beginning with the stored result of now
+   * previous expression
+   *
+   * Triggered when a user evaluates expression (=) and subsequently
+   * clicks on any of the math operator buttons (+, -, /, *)
+   */
+  onContinueWithPreviousExpression() {
+    this.onAllClear()
+    const historyLength = this.data.history.length
+    const lastHistoryLog = this.data.history[historyLength - 1]
+    this.calculatorService.updateExpression(lastHistoryLog.evaluation ? lastHistoryLog.evaluation : '')
+  }
+
+  /**
+   * Performs a predefined expression and/or store operation based on
+   * the action type
+   *
+   * @param {(ECalsActions | null)} action Action type
+   */
   onCalcAction(action: ECalsActions | null) {
     switch (action) {
       case ECalsActions.ALL_CLEAR:
@@ -137,19 +203,27 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Updates expression to an empty string, saves the result to the store's history,
+   * and nullifies the result in the store
+   */
   onAllClear() {
     this.calculatorService.updateExpression('')
     this.saveCurrentResultToHistory()
     this.clearResultLog()
   }
 
-  onContinueWithPreviousExpression() {
-    this.onAllClear()
-    const historyLength = this.data.history.length
-    const lastHistoryLog = this.data.history[historyLength - 1]
-    this.calculatorService.updateExpression(lastHistoryLog.evaluation ? lastHistoryLog.evaluation : '')
-  }
+  /**
+   ************************ USER INPUT HANDLING ***********************
+   */
 
+  /**
+   * Determines whether suggested operator (math sign) may be appended to the
+   * current expression string; on success, it appends and updates the expression;
+   * on failure, it flags and logs the error
+   *
+   * @param {string} symbol Math sign to be appended to the expression
+   */
   handleOperator(symbol: string) {
     let allowAppendObj: { allow: boolean } = { allow: false };
     this.calculatorService.determineAllowBoolean(allowAppendObj, symbol);
@@ -161,6 +235,16 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Determines whether suggested number (or dot*) may be appended to the
+   * current expression string; on success, it appends and updates the expression;
+   * on failure, it flags and logs the error
+   *
+   * *Dot is handled as a number as well, method includes check whether
+   * dot is already present in case of a humber
+   *
+   * @param {string} symbol Number to be appended to the expression
+   */
   handleNumber(symbol: string) {
     // Non-dot case
     if (symbol !== '.') {
@@ -176,8 +260,20 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Multiple dot input, dot on empty expression,
-  // double operator input, invalid operations
+  /**
+   ***************************** ERROR HANDLING ***********************
+   */
+
+  /**
+   * Shows red warning styling in the calculator container for a moment
+   * and logs the error in the store
+   *
+   * Cases when caused: Multiple dot input, dot on empty expression,
+   * double operator input, invalid operations
+   *
+   * @param {*} [e]                                     Optional error
+   * @param {(string | ECalsActions)} [attemptedAction] Optional attempted action
+   */
   flagInvalidAction(e?: any, attemptedAction?: string | ECalsActions) {
     this.invalidAction = true;
     setTimeout(() => (this.invalidAction = false), 500);
@@ -190,6 +286,9 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     public calculatorService: CalculatorService,
   ) {}
 
+  /**
+   ************************************** HOOKS ***********************
+   */
   ngOnInit(): void {
     // From service
     this.operators = this.calculatorService.operators
