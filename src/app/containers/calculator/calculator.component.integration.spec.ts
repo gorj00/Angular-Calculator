@@ -25,11 +25,6 @@ describe('CalculatorComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(fixture).toBeTruthy()
-    expect(component).toBeTruthy();
-  });
-
   describe('CALC ACTIONS', () => {
     describe('+/- (change operator)', () => {
       const successCases = [
@@ -94,7 +89,7 @@ describe('CalculatorComponent', () => {
           })
         })
 
-        // TODO: logging errors
+        // TODO: logging errors check
       })
     })
   })
