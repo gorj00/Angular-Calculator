@@ -1,6 +1,6 @@
 <div class="row  mt-3">
   <div
-    *ngFor="let calcButton of calcButtons"
+    *ngFor="let calcButton of calcButtons; let i as index"
     [ngClass]="[calcButton.specialCol ? 'col-' + calcButton.specialCol : 'col-3', 'mb-3']"
   >
     <button
@@ -9,6 +9,7 @@
       (click)="onButtonClick(
         calcButton.label, calcButton.type, calcButton?.action
       )"
+      [attr.data-test]="'calc-button-' + calcButton.label"
     >
       {{ calcButton.label }}
     </button>
