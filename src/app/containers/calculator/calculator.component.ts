@@ -4,7 +4,16 @@ import { CalculatorFacade } from '../../store/calculator/calculator.facade';
 import { CalculatorService } from '../../services/calculator.service'
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
-import * as math from 'mathjs';
+import { create, all, ConfigOptions } from 'mathjs'
+
+// Due to JS binary issues with round-off orrors 0.1 + 0.2 and similar
+const config: ConfigOptions = {
+  number: 'BigNumber',      // Default type of number:
+                            // 'number' (default), 'BigNumber', or 'Fraction'
+  precision: 64,            // Number of significant digits for BigNumbers
+  epsilon: 1e-60
+}
+const math = create(all, config)
 
 @Component({
   selector: 'calc-calculator',
